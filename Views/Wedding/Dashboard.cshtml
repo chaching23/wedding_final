@@ -1,0 +1,52 @@
+@model List<Wedding>
+    
+<div style="display: inline-block; width:650px;"><h1>Welcome to the Wedding Planner!</h1></div>
+<div style="display: inline-block; width:250px;float:right;"><h6><a asp-action="Dashboard">Dashboard</a> |<a href="/Logout">Lougout</a></h6></div>
+
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Wedding</th>
+            <th>Date</th>
+            <th># of Guests</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach(var x in Model)
+    {
+
+        <tr>
+            <td><a asp-action="Show" asp-route-ActId="@x.WedId">@x.Wed1  @x.Wed2 </a></td>
+            <td>@x.Date.ToString("MMMM dd, yyyy")</td>
+            <td>@x.Answer.Count</td>
+            <td>
+                @if(x.UserId != ViewBag.UserId)
+                {
+                    if(x.Answer.Any(v => v.UserId == ViewBag.UserId))
+                    {
+                        <a asp-action="Remove" asp-controller="Action" asp-route-ActId="@x.WedId">UNJOIN</a>
+                    }
+                    else
+                    {
+                        <a asp-action="Action" asp-controller="Action" asp-route-ActId="@x.WedId" asp-route-z="@true">RSVP</a>
+                        <!-- <span> |</span>
+                        <a asp-action="Action" asp-controller="Action" asp-route-ActId="@x.WedId" asp-route-z="@false">NO</a> -->
+                    }
+                }
+                else
+                {
+                   
+                    <a asp-action="Edit" asp-controller="Wedding" asp-route-ActId="@x.WedId">EDIT</a><span>|</span>
+                     <a asp-action="Delete" asp-controller="Wedding" asp-route-ActId="@x.WedId">DELETE</a> 
+
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+
+</table>
+
+     <a asp-action="New"><button>New Wedding</button></a>
